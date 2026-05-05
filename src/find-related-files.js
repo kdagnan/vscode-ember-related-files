@@ -39,11 +39,6 @@ const groups = [
 })
 
 const types = [
-  { module: 'pod-component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/component\.(js|ts)$/ },
-  { module: 'pod-component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/template\.(hbs)$/ },
-  { module: 'pod-component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\/style\.(css|sass|scss)$/ },
-  { module: 'pod-component-unit', exp: /^()tests\/unit\/components\/(.+)\/component-test\.(js|ts)$/ },
-  { module: 'pod-component-integration', exp: /^()tests\/integration\/components\/(.+)\/component-test\.(js|ts)$/ },
   { module: 'component', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(js|ts|gts)$/ },
   { module: 'component-template', exp: /^(app|addon|lib\/(?:.+)\/addon)\/components\/(.+)\.(hbs)$/ },
   { module: 'component-style', exp: /^(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+)\.(css|sass|scss)$/ },
@@ -287,7 +282,14 @@ function findRelatedFiles (rootPath, filePath) {
 
   if (!type) { return [] }
 
-  return getRelatedTypeKeys(type.key)
+  let relatedKeys = getRelatedTypeKeys(type.key)
+  
+  // For co-located components (.gts/.gjs), exclude template variants to avoid duplicates
+  if (type.key.endsWith('-gts') || type.key.endsWith('-gjs')) {
+    relatedKeys = relatedKeys.filter((key) => !key.includes('-template-'))
+  }
+
+  return relatedKeys
     .map((typeKey) => ({
       label: typeKeyToLabel(typeKey),
       path: getPath(type, typeKey)
