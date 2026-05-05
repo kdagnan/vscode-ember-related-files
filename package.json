@@ -2,7 +2,7 @@
     "name": "ember-related-files",
     "displayName": "Ember Related Files",
     "description": "",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "publisher": "josa",
     "license": "MIT",
     "homepage": "https://github.com/josa42/vscode-ember-related-files",
@@ -25,13 +25,13 @@
         "theme": "light"
     },
     "activationEvents": [
-        "onCommand:extension.relatedFiles"
+        "onCommand:relatedFiles.relatedFiles"
     ],
-    "main": "./out/src/extension",
+    "main": "./dist/extension.js",
     "contributes": {
         "commands": [
             {
-                "command": "extension.relatedFiles",
+                "command": "relatedFiles.relatedFiles",
                 "title": "Related Files"
             }
         ],
@@ -57,25 +57,22 @@
                 "win": "ctrl+alt+r",
                 "linux": "ctrl+alt+r",
                 "key": "ctrl+alt+r",
-                "command": "extension.relatedFiles"
+                "command": "relatedFiles.relatedFiles"
             }
         ]
     },
     "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
+        "vscode:prepublish": "npm run compile",
+        "compile": "node esbuild.js",
         "test": "node ./node_modules/vscode/bin/test",
         "publish": "np --no-publish $* && vsce package && vsce publish"
     },
     "devDependencies": {
         "@types/mocha": "^5.2.5",
         "@types/node": "^10.7.1",
+        "esbuild": "^0.28.0",
         "mocha": "~5.2.0",
-        "typescript": "^3.0.1",
-        "vscode": "^1.1.36"
-    },
-    "dependencies": {
-        "ember-find-related-files": "0.4.0"
+        "typescript": "^6.0.3",
+        "vscode": "^1.1.37"
     }
 }

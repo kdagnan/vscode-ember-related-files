@@ -5,7 +5,6 @@
 .vscode-test/**
 .vscode/**
 **/*.map
-out/test/**
-src/**
+out/**
 test/**
 tsconfig.json
